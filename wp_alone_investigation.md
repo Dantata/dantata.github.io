@@ -8,6 +8,7 @@ To mitigate any potential threats, WordPress site owners using the theme are adv
 
 Initially, it looked like this was the POE, but I couldn't prove it as I couldn't match requests in the logs to /wp-admin/admin-ajax.php?action=alone_import_pack_install_plugin:
 
+```
 $ zcat ~/logs/2025-07/www.*.log.gz  | grep -v wp-cron | awk {'print $1,$4,$5,$6,$7,$9'} | grep alone_import_pack_install_plugin
 185.159.158.108 [11/Jul/2025:22:22:21 -0400] "POST /wp-admin/admin-ajax.php?action=alone_import_pack_install_plugin 301
 185.159.158.108 [11/Jul/2025:22:22:22 -0400] "GET /wp-admin/admin-ajax.php?action=alone_import_pack_install_plugin 400
@@ -39,15 +40,19 @@ $ zcat ~/logs/2025-07/www.*.log.gz  | grep -v wp-cron | awk {'print $1,$4,$5,$6,
 165.22.49.136 [31/Jul/2025:19:51:28 -0400] "POST //wp-admin/admin-ajax.php?action=alone_import_pack_install_plugin 403
 192.145.117.169 [31/Jul/2025:22:59:17 -0400] "POST /wp-admin/admin-ajax.php?action=alone_import_pack_install_plugin 301
 192.145.117.169 [31/Jul/2025:22:59:18 -0400] "GET /wp-admin/admin-ajax.php?action=alone_import_pack_install_plugin 403
+```
 
 Turns out, I was able to find a POST request directly to /wp-admin/admin-ajax.php:
 
+```
 87.120.92.24 - - [16/Jul/2025:15:47:15 -0400] "POST /wp-admin/admin-ajax.php HTTP/1.1" 200
+```
 
 and only a couple of seconds later:
 
+```
 87.120.92.24 - - [16/Jul/2025:15:47:30 -0400] "POST /wp-content/plugins/background-image-cropper/accesson.php
-
+```
 I couldn't examine the contents of the POST request, as they're no longer available, but it's safe to assume that this is the initial point of entry, given the fact that the oldest infected file is:
 
 /wp-content/plugins/background-image-cropper/background-image-cropper.php 2025-07-16 21:27:58
