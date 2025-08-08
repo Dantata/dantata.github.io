@@ -9,7 +9,6 @@ To mitigate any potential threats, WordPress site owners using the theme are adv
 Initially, it looked like this was the POE, but I couldn't prove it as I couldn't match requests in the logs to /wp-admin/admin-ajax.php?action=alone_import_pack_install_plugin:
 
 ```
-$ zcat ~/logs/2025-07/www.*.log.gz  | grep -v wp-cron | awk {'print $1,$4,$5,$6,$7,$9'} | grep alone_import_pack_install_plugin
 185.159.158.108 [11/Jul/2025:22:22:21 -0400] "POST /wp-admin/admin-ajax.php?action=alone_import_pack_install_plugin 301
 185.159.158.108 [11/Jul/2025:22:22:22 -0400] "GET /wp-admin/admin-ajax.php?action=alone_import_pack_install_plugin 400
 185.159.158.108 [11/Jul/2025:22:22:23 -0400] "POST /wp-admin/admin-ajax.php?action=alone_import_pack_install_plugin 400
@@ -57,6 +56,6 @@ I couldn't examine the contents of the POST request, as they're no longer availa
 
 /wp-content/plugins/background-image-cropper/background-image-cropper.php 2025-07-16 21:27:58
 
-So, I backed up the malicious installation, and then proceeded to reinstall it and secure it. I regularly use https://github.com/Dantata/cleaner when dealing with hacked accounts because it allows me to (1) run a pretty thorough pre-clean check, and then do a clean reinstall.
+So, I backed up the malicious installation, and then proceeded to reinstall it and secure it. I regularly use https://github.com/Dantata/cleaner when dealing with hacked accounts because it *allows me to run a pretty thorough pre-clean check*, and then do a *clean reinstall*.
 
-This particular case was interesting because (1) the attack was slightly modified in comparison with the public data. Even if it was just hiding the GET parameter and (2) because the bad actors tried to prevent restoration/cleanup by tightening the permissions of files/directories - some were set to 0555, others to 0444. This initially caused problems for cleaner.sh.
+This particular case was interesting because the attack was slightly modified in comparison with the public data. Even if it was just hiding the GET parameter and because the bad actors tried to prevent restoration/cleanup by tightening the permissions of files/directories - some were set to 0555, others to 0444. This initially caused problems for cleaner.sh.
